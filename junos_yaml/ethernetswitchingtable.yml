@@ -1,0 +1,150 @@
+---
+EthernetSwitchingTable:
+    rpc: get-ethernet-switching-table-information
+    args:
+        detail: True
+    key: .//mac-vlan
+    item: ethernet-switching-table
+    view: EthernetSwitchingView
+
+EthernetSwitchingView:
+    fields:
+        count: mac-table-count
+        learned: mac-table-learned
+        persistent: mac-table-persistent
+        entries: _MacTableEntriesTable
+
+_MacTableEntriesTable:
+    item: mac-table-entry
+    key: mac-vlan
+    view: _MacTableEntriesView
+
+_MacTableEntriesView:
+    fields:
+        vlan: mac-vlan
+        tag: mac-vlan-tag
+        mac: mac-address
+        type: mac-type
+        age: mac-age
+        learned_time: mac-learned-time
+        action: mac-action
+        next_hop: mac-nexthop
+        interface: mac-interface
+        interface-list: _MacTableInterfacesTable
+
+_MacTableInterfacesTable:
+    item: mac-interfaces-list
+    key: mac-interfaces
+    view: _MacTableInterfacesView
+
+_MacTableInterfacesView:
+    fields:
+        interfaces: mac-interfaces
+
+
+# ------------------------------------------------------------
+#  V1
+# -----------------------------------------------------------
+EtherSwTableiV1:
+  rpc: get-interface-ethernet-switching-table
+#  item: ethernet-switching-table/mac-table-entry[mac-type='Learn']
+  item: ethernet-switching-table/mac-table-entry
+  key: mac-address
+  view: EtherSwView
+
+EtherSwView:
+  fields:
+    vlan: mac-vlan
+    mac: mac-address
+    type: mac-type
+    age: mac-age
+    interface: mac-interfaces-list/mac-interfaces
+    
+    
+# ------------------------------------------------------------
+#  V2
+# -----------------------------------------------------------
+EtherSwTableV2:
+  rpc: get-interface-ethernet-switching-table
+#  item: ethernet-switching-table/mac-table-entry[mac-type='Learn']
+  item: ethernet-switching-table/mac-table-entry
+#  key: mac-address
+  key: .//mac-vlan
+  view: EtherSwView
+
+EtherSwView:
+  fields:
+    vlan: mac-vlan
+    tag: mac-vlan-tag
+    mac: mac-address
+    type: mac-type
+    age: mac-age
+    learned_time: mac-learned-time
+    action: mac-action
+    next_hop: mac-nexthop
+    interface: mac-interfaces-list/mac-interfaces | mac-interface
+
+# ------------------------------------------------------------
+#  V2.00
+# -----------------------------------------------------------
+EtherSwTableV200:
+  rpc: get-interface-ethernet-switching-table
+#  item: ethernet-switching-table/mac-table-entry[mac-type='Learn']
+  item: ethernet-switching-table/mac-table-entry  
+#  key: mac-address
+  key:
+          #- ancestor::*[starts-with(name,'FPC')]/name
+          #    - ancestor::ethernet-switching-table/mac-table-entry
+    - .//mac-vlan
+    - .//mac-address
+  view: _EtherSwView
+
+_EtherSwView:
+  fields:
+    vlan: mac-vlan
+    tag: mac-vlan-tag
+    mac: mac-address
+ #   mac-address: 
+ #     type: mac-type
+            #      -- //::*[findall('mac-address')]
+    type: mac-type
+    age: mac-age
+    learned_time: mac-learned-time
+    action: mac-action
+    next_hop: mac-nexthop
+    interface: mac-interfaces-list/mac-interfaces | mac-interface
+
+# ------------------------------------------------------------
+#  V3 key: mac-interfaces-list/mac-interfaces
+# -----------------------------------------------------------
+MacTable:
+  rpc: get-ethernet-switching-table-information
+  item: ethernet-switching-table/mac-table-entry
+  key: mac-interfaces-list/mac-interfaces
+  view: MacView
+
+MacView:
+  fields:
+    mac_vlan: mac-vlan
+    mac_address: mac-address
+    mac_type: mac-type
+    mac_interfaces: 'mac-interfaces-list/mac-interfaces'
+    
+# ------------------------------------------------------------
+#  V4 key: .//mac-vlan
+# -----------------------------------------------------------
+ESwTBL:
+  rpc: get-interface-ethernet-switching-table
+  item: ethernet-switching-table/mac-table-entry[mac-type='Learn']
+  key: .//mac-vlan
+  view: EtherSwView
+
+EtherSwView:
+  fields:
+    vlan_name: mac-vlan
+    mac: mac-address
+    mac_type: mac-type
+    mac_age: mac-age
+    interface: mac-interfaces-list/mac-interfaces
+
+

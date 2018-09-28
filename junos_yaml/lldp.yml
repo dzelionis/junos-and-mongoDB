@@ -1,0 +1,148 @@
+---
+LLDPNeighborTable:
+  rpc: get-lldp-neighbors-information
+  item: lldp-neighbor-information
+  key: lldp-local-interface | lldp-local-port-id
+  view: LLDPNeighborView
+
+LLDPNeighborView:
+  fields:
+    local_int: lldp-local-interface | lldp-local-port-id
+    local_parent: lldp-local-parent-interface-name
+    remote_type: lldp-remote-chassis-id-subtype
+    remote_chassis_id: lldp-remote-chassis-id
+    remote_port_desc: lldp-remote-port-description
+    remote_port_id: lldp-remote-port-id
+    remote_sysname: lldp-remote-system-name
+
+# ------------------------------------
+# show lldp neighbor interface <int>
+# ------------------------------------
+lldpInterfaceTable:
+  rpc: get-lldp-interface-neighbors-information
+  args:
+    interface_name: '[afgx]e*'
+  args_key: interface_name
+  item: lldp-neighbor-information
+  key: lldp-local-port-id
+  view: lldp_neighbors_detail_view
+
+lldp_neighbors_detail_view:
+  fields:
+    index: lldp-index
+    ttl: lldp-ttl
+    timemark: lldp-timemark
+    age: lldp-age
+    local_interface: lldp-local-interface
+    local_parent_interface_name: lldp-local-parent-interface-name
+    local_port_id: lldp-local-port-id
+    local_port_ageout_count: lldp-local-port-ageout-count
+    remote_chassis_id_subtype: lldp-remote-chassis-id-subtype
+    remote_chassis_id: lldp-remote-chassis-id
+    remote_port_id_subtype: lldp-remote-port-id-subtype
+    remote_port_id: lldp-remote-port-id
+    remote_port_description: lldp-remote-port-description
+    remote_system_name: lldp-remote-system-name
+    remote_system_description: lldp-system-description/lldp-remote-system-description
+    remote_system_capabilities_supported: lldp-remote-system-capabilities-supported
+    remote_system_capabilities_enabled: lldp-remote-system-capabilities-enabled
+    remote_management_address_type: lldp-remote-management-address-type
+    remote_management_address: lldp-remote-management-address
+    remote_management_address_port_id: lldp-remote-management-address-port-id
+    remote_management_address_sub_type: lldp-remote-management-address-sub-type
+    remote_management_address_interface_subtype: lldp-remote-management-address-interface-subtype
+    remote_management_addr_oid: lldp-remote-management-addr-oid
+
+# --------------------------------------
+# show lldp detail
+# --------------------------------------
+lldpDetailTable:
+  rpc: get-lldp-information-detail
+  item: ../lldp
+  key:  lldp-global-status
+  view: _lldpDetailView
+
+_lldpDetailView:
+  fields:
+    global_status: lldp-global-status
+    advertisement_interval: lldp-advertisement-interval
+    transmit_delay_interval: lldp-transmit-delay-interval
+    hold_time_interval: lldp-hold-time-interval
+    notification_interval: lldp-notification-interval
+    ptopo_configuration_trap_interval: ptopo-configuration-trap-interval
+    ptopo_maximum_hold_time: ptopo-maximum-hold-time
+    port_id_subtype: lldp-port-id-subtype
+    port_description_type: lldp-port-description-type
+    med_global_status: lldp-med-global-status
+    interface_name: lldp-interface-information/lldp-interface-name
+    parent_interface_name: lldp-interface-information/lldp-parent-interface-name
+    interface_status: lldp-interface-information/lldp-interface-status
+    med_interface_status: lldp-interface-information/lldp-med-interface-status
+    interface_power_negotiation_status: lldp-interface-information/lldp-interface-power-negotiation-status
+    interface_neighbor_count: lldp-interface-information/lldp-interface-neighbor-count
+
+# ---------------------------------------------
+# show lldp detail (exported vlan infortmation)
+# ---------------------------------------------
+lldpExportedVlanTable:
+  rpc: get-lldp-information-detail
+  item: ../lldp/exported-vlan-information
+  key:  lldp-vlan-name
+  view: _lldpExportedVlanView
+
+_lldpExportedVlanView:
+  fields:
+    vlan_interface_name: lldp-vlan-interface-name
+    vlan_parent_interface_name: lldp-vlan-parent-interface-name
+    vlan_name: lldp-vlan-name
+    vlan_tag: lldp-vlan-tag
+
+
+#  groups:
+#    exported: ../lldp/exported-vlan-information
+
+#  fields_exported:
+#    vlan_interface_name: lldp-vlan-interface-name
+#    vlan_parent_interface_name: lldp-vlan-parent-interface-name
+#    vlan_name: lldp-vlan-name
+#    vlan_tag: lldp-vlan-tag
+    
+
+# --------------------------------------
+# show lldp local-information 
+# --------------------------------------
+lldpLocalInfoTable:
+  rpc: get-lldp-local-info
+  item: ../lldp-local-info
+  key: lldp-local-chassis-id
+  view: lldp_local_info_view
+
+lldp_local_info_view:
+  fields:
+    chassis_id: lldp-local-chassis-id
+    system_name: lldp-local-system-name
+    system_descr: lldp-local-system-descr
+    system_capabilities_supported: lldp-local-system-capabilities-supported
+    system_capabilities_enabled: lldp-local-system-capabilities-enabled
+    port_description: lldp-local-port-description
+    management_address: lldp-local-management-address
+    management_address_type: lldp-local-management-address-type
+    management_address_interface_id: lldp-local-management-address-interface-id
+    port_id_sub_type: lldp-local-port-id-sub-type
+    management_address_interface_sub_type: lldp-local-management-address-interface-sub-type
+    interface-info: lldpLocalIntInfoTable
+
+lldpLocalIntInfoTable:
+  item: lldp-local-interface-info
+  key: lldp-local-interface-id
+  view: lldpLocalIntInfoView
+   
+lldpLocalIntInfoView:
+  fields:
+    interface_name: lldp-local-interface-name
+    parent_interface_name: lldp-parent-local-interface-name
+    interface_id: lldp-local-interface-id
+    interface_descr: lldp-local-interface-descr
+    interface_status: lldp-local-interface-status
+    interface_tunneling: lldp-local-interface-tunneling
+  
