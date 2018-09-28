@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Juniper_Pyez-and-MongoDB" pattern="file:net_to_DB-v3.py||file[JunOS-and-MongoDB]:junos_yaml//*" />
+</component>
