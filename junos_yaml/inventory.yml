@@ -1,0 +1,19 @@
+---
+### -----------------------------------------------------------------------
+### show chassis-inventory                 <mod by domas.zelionis@enet.ie>
+### -----------------------------------------------------------------------
+ModuleTBL:
+  rpc: get-chassis-inventory
+  item: .//chassis-sub-module|.//chassis-module|.//chassis-sub-sub-module
+  key:
+    - name
+  view: _ModuleTBLView
+
+_ModuleTBLView:
+  fields:
+    jname: name
+    sn: serial-number
+    pn: part-number
+    ver: version
+    type: description
+

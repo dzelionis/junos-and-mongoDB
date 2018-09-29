@@ -1,4 +1,7 @@
 ---
+### ------------------------------------------------------------------
+### show vlans                       <Mod by domas.zelionis@enet.ie>
+### -------------------------------------------------------------------
 VlanTable:
   rpc: get-vlan-information
   item: vlan
@@ -16,7 +19,9 @@ VlanView:
     members: .//vlan-member-interface
 
 
-
+### ------------------------------------------------------------------
+### show vlans detail                     <by domas.zelionis@enet.ie>
+### ------------------------------------------------------------------
 VlanDetailTable:
   rpc: get-vlan-information
   args:

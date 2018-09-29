@@ -1,0 +1,137 @@
+---
+### ---------------------------------------------------------------------------------------
+### show show ethernet-switching table | sort by vlan & mac<by domas.zelionis@enet.ie>
+### ---------------------------------------------------------------------------------------
+MacTBL:
+  rpc: get-interface-ethernet-switching-table
+  item: ethernet-switching-table/mac-table-entry #[mac-type='Learn']
+  key:
+    - .//mac-vlan
+    - .//mac-address
+          # - ancestor::*[starts-with(name,'')]/name
+          # - ancestor::ethernet-switching-table/mac-table-entry
+  view: _MacView
+
+_MacView:
+  fields:
+    vlan: mac-vlan
+    tag: mac-vlan-tag
+    mac: mac-address
+    type: mac-type
+    age: mac-age
+    learned_time: mac-learned-time
+    action: mac-action
+    next_hop: mac-nexthop
+    interface: mac-interfaces-list/mac-interfaces | mac-interface
+
+
+### ---------------------------------------------------------------------------------------
+### show show ethernet-switching table | sort by vlan & mac <Mod by domas.zelionis@enet.ie>
+### ---------------------------------------------------------------------------------------
+EthernetSwitchingTBL:
+    rpc: get-ethernet-switching-table-information
+    args:
+        detail: True
+    key:
+      - .//mac-vlan
+      - .//mac-address
+    item: ethernet-switching-table
+    view: _EthernetSwitchingView
+
+_EthernetSwitchingView:
+    fields:
+        count: mac-table-count
+        learned: mac-table-learned
+        persistent: mac-table-persistent
+        entries: _MacTableEntriesTBL
+
+_MacTableEntriesTBL:
+    item: mac-table-entry
+    key:
+      - mac-vlan
+      - mac-address
+    view: _MacTableEntriesView
+
+_MacTableEntriesView:
+    fields:
+        vlan: mac-vlan
+        tag: mac-vlan-tag
+        mac: mac-address
+        type: mac-type
+        age: mac-age
+        learned_time: mac-learned-time
+        action: mac-action
+        next_hop: mac-nexthop
+        interface: mac-interface
+        interface-list: _MacTableInterfacesTBL
+
+_MacTableInterfacesTBL:
+    item: mac-interfaces-list
+    key: mac-interfaces
+    view: _MacTableInterfacesView
+
+_MacTableInterfacesView:
+    fields:
+        interfaces: mac-interfaces
+
+
+### -----------------------------------------------------------------------------------
+### show show ethernet-switching table | sort by mac <by domas.zelionis@enet.ie>
+### ----------------------------------------------------------------------------------
+EtherSwTBL_V1:
+  rpc: get-interface-ethernet-switching-table
+#  item: ethernet-switching-table/mac-table-entry[mac-type='Learn']
+  item: ethernet-switching-table/mac-table-entry
+  key: mac-address
+  view: _EtherSwView_V1
+
+_EtherSwView_V1:
+  fields:
+    vlan: mac-vlan
+    mac: mac-address
+    type: mac-type
+    age: mac-age
+    interface: mac-interfaces-list/mac-interfaces
+    
+    
+### -----------------------------------------------------------------------------------
+### show show ethernet-switching table | sort by vlan <by domas.zelionis@enet.ie>
+### ----------------------------------------------------------------------------------
+EtherSwTBL_V2:
+  rpc: get-interface-ethernet-switching-table
+#  item: ethernet-switching-table/mac-table-entry[mac-type='Learn']
+  item: ethernet-switching-table/mac-table-entry
+#  key: mac-address
+  key: .//mac-vlan
+  view: _EtherSwView_V2
+
+_EtherSwView_V2:
+  fields:
+    vlan: mac-vlan
+    tag: mac-vlan-tag
+    mac: mac-address
+    type: mac-type
+    age: mac-age
+    learned_time: mac-learned-time
+    action: mac-action
+    next_hop: mac-nexthop
+    interface: mac-interfaces-list/mac-interfaces | mac-interface
+
+
+### -----------------------------------------------------------------------------------
+### show show ethernet-switching table | sort by interface <by domas.zelionis@enet.ie>
+### ----------------------------------------------------------------------------------
+EtherSwTBL_V3:
+  rpc: get-ethernet-switching-table-information
+  item: ethernet-switching-table/mac-table-entry
+  key: mac-interfaces-list/mac-interfaces
+  view: _EtherSwView_V3
+
+_EtherSwView_V3:
+  fields:
+    mac_vlan: mac-vlan
+    mac_address: mac-address
+    mac_type: mac-type
+    mac_interfaces: 'mac-interfaces-list/mac-interfaces'
+    
+

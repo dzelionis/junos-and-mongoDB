@@ -1,0 +1,64 @@
+---
+### -----------------------------------------------------------------
+### show l2vpn connections             <by domas.zelionis@enet.ie>
+### -----------------------------------------------------------------
+
+L2VPNConnectionTBL:
+  rpc: get-l2vpn-connection-information
+  item: instance/reference-site/connection
+  key:
+    - ../../instance-name
+    - ./remote-pe
+    - ./connection-id
+    - ../local-site-id
+  view: _L2VPNConnectionView
+
+_L2VPNConnectionView:
+  groups:
+    loc_int: local-interface
+  fields:
+    instance_name: ../../instance-name
+    connection_id: connection-id
+    remote_pe: remote-pe
+    control_word: control-word
+    control_word_type: control-word-type
+    connection_type: connection-type
+    reference_site: ../local-site-id
+    connection_status: connection-status
+    last_change: .//last-change
+    up_transitions: up-transitions
+    inbound_label: inbound-label
+    outbound_label: outbound-label
+  fields_loc_int:
+    interface_name: interface-name
+    interface_status: interface-status
+    interface_encapsulation: interface-encapsulation
+
+
+
+### ---------------------------------------------------------------------
+### show l2circuit connections             <mod by domas.zelionis@enet.ie>
+### ---------------------------------------------------------------------
+
+L2CircuitConnectionTBL:
+  rpc: get-l2ckt-connection-information
+  item: l2circuit-neighbor/connection
+  key:
+    - ancestor::l2circuit-neighbor/neighbor-address
+    - connection-id
+  view: _L2CircuitConnectionView
+
+_L2CircuitConnectionView:
+  fields:
+    connection_id: connection-id
+    connection_type: connection-type
+    connection_status: connection-status
+    remote_pe: remote-pe
+    control_word: control-word
+    inboud_label: inbound-label
+    outbound_label: outbound-label
+    pw_status_tlv: pw-status-tlv
+    local_interface: local-interface/interface-name
+    interface_status: local-interface/interface-status
+    interface_encapsulation: local-interface/interface-encapsulation
+    interface_description: local-interface/interface-description

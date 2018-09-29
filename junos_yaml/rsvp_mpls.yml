@@ -1,0 +1,189 @@
+---
+### ------------------------------------------------------
+### show rsvp neighbor detail  <by domas.zelionis@enet.ie>
+### ------------------------------------------------------
+RsvpNeighborTBL:
+  rpc: get-rsvp-neighbor-information
+  args:
+    detail: True
+  item: rsvp-neighbor
+  key: 
+    - rsvp-neighbor-address
+    - rsvp-neighbor-interface
+  view: _RsvpNeighborView
+
+_RsvpNeighborView:
+  fields:
+    interface_name: rsvp-neighbor-interface
+    neighbor_address: rsvp-neighbor-address
+    neighbor_status: rsvp-neighbor-status
+    last-changed-time: last-changed-time
+    neighbor_idle: neighbor-idle
+    neighbor_up_count: neighbor-up-count
+    neighbor_down_count: neighbor-down-count
+    messages_received: messages-received
+    hello_interval: hello-interval
+    messages_received: messages-received
+    messages_sent: messages-sent
+    neighbor_remote_instance: rsvp-neighbor-remote-instance
+    neighbor_local_instance: rsvp-neighbor-local-instance
+
+
+### ------------------------------------------------------
+### show rsvp interface detail <by domas.zelionis@enet.ie>
+### ------------------------------------------------------
+RsvpInterfaceTBL:
+  rpc: get-rsvp-interface-information
+  args:
+    detail: True
+  item: rsvp-interface
+  key:
+    - interface-address
+    - interface-name
+  view: _RsvpInterfaceView
+
+_RsvpInterfaceView:
+  fields:
+    interface_address: interface-address
+    interface_name: interface-name
+    index: {index: int}
+    rsvp_status: rsvp-status
+    # Flags
+    authentication_flag: {authentication-flag: flag}
+    aggregate_flag: {aggregate-flag: flag}
+    ack_flag: {ack-flag: flag}
+    protect_flag: {protect-flag: flag}
+    hello_interval: {hello-interval: int}
+    rsvpMsg: _RsvpMsgTBL
+
+
+_RsvpMsgTBL:
+    item: .//rsvp-message[starts-with(.,'Path')]/parent::* | .//rsvp-message[starts-with(.,'Resv')]/parent::* |
+      .//rsvp-message[starts-with(.,'Hello')]/parent::* | .//rsvp-message[starts-with(.,'Ack')]/parent::* |
+      .//rsvp-message[starts-with(.,'Srefresh')]/parent::* | .//rsvp-message[starts-with(.,'Notify')]/parent::* |
+      .//rsvp-message[starts-with(.,'EndtoEnd RSVP')]/parent::*
+    key:  ./rsvp-message
+    view: _RsvpPathMsgView
+
+_RsvpPathMsgView:
+  fields:
+    sent: messages-sent
+    received: messages-received
+
+### -----------------------------------------------------------------------
+### NOT FINISHED YET
+###   show rsvp session detail                <by domas.zelionis@enet.ie>
+### -----------------------------------------------------------------------
+
+RsvpSessionTBL:
+  rpc: get-rsvp-session-information
+  args:
+    detail: True
+  item: rsvp-session-data/rsvp-session
+  key:
+    - destination-address
+    - name
+    - ../session-type
+    - source-address
+  view: _RsvpSessionView
+
+_RsvpSessionView:
+#  groups:
+#    path: ./message-statistics/[starts-with(rsvp-message,'Path')]/parent::*messages
+          # .//name[starts-with(rsvp-message,'FPC')]/parent::*
+#    pathErr: ./message-statistics/[starts-with(rsvp-message,'PathErr')]/parent::*messages
+    # .//name[starts-with(rsvp-message,'FPC')]/parent::*
+  fields:
+    destination-address: destination-address
+    source-address: source-address
+    lsp_name: name
+    session_type: ../session-type
+    lsp_starte: lsp-state
+    lsp_type: mpls-lsp-type
+    lsp_id: lsp-id
+    tunnel_id: tunnel-id
+
+
+### ------------------------------------------------------
+### show mpls lsp extensive   <by domas.zelionis@enet.ie>
+### ------------------------------------------------------
+MplsLspTBL:
+  rpc: get-mpls-lsp-information
+  args:
+    extensive: True
+  item: .//mpls-lsp
+  key:
+    - ../../session-type
+    - destination-address
+    - source-address
+  view: _MplsLspView
+
+_MplsLspView:
+  fields:
+    session_type: ../../session-type
+    destination_address: destination-address
+    source_address: source-address
+    lsp_state: lsp-state
+    route_count: route-count
+    lsp_name: name
+    lsp_description: lsp-description
+    active_path: active-path
+    lsp_type: lsp-type
+    egress_label_operation: egress-label-operation
+    load_balance: load-balance
+    lsp_creation_time: lsp-creation-time
+    lsp_path: _MplsLspPathTBL
+
+
+# --------------------------------------------------------------------------------------
+# Mpls Lsp Path Data, key Primary or stand-by & lsp name   <by domas.zelionis@enet.ie>
+# --------------------------------------------------------------------------------------
+
+_MplsLspPathHistoryTBL:
+_MplsLspPathTBL:
+  item: mpls-lsp-path
+  key:
+    - title
+#    - name
+  view: _MplsLspPathView
+
+
+_MplsLspPathView:
+  fields:
+    title: title
+    name: name
+    path_active: path-active
+    path_state: path-state
+    setup_priority: setup-priority
+    hold-priority: hold-priority
+    smart_optimize_timer: smart-optimize-timer
+    cspf_status: cspf-status
+    received_rro: received-rro
+    explicit_route: _MplsLspExplicitRouteTBL
+    path_history: _MplsLspPathHistoryTBL
+
+_MplsLspExplicitRouteTBL:
+  item: .//address | .//explicit-route-type
+  key: ../../title
+  view: _MplsLspExplicitRouteView
+
+_MplsLspExplicitRouteView:
+  fields:
+    address: ../address | ../explicit-route-type
+
+# -------------------------------------------------------------
+# Mpls Lsp Path Historical Data   <by domas.zelionis@enet.ie>
+# -------------------------------------------------------------
+
+_MplsLspPathHistoryTBL:
+  item: path-history
+  key: sequence-number
+  view: _MplsLspPathHistoryView
+
+_MplsLspPathHistoryView:
+  fields:
+    sequence_number: sequence-number
+    time: time
+    log: log
+    route: route
+

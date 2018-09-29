@@ -1,0 +1,20 @@
+---
+### -----------------------------------------------------------------------
+### show chassis-inventory xcvr            <mod by domas.zelionis@enet.ie>
+### -----------------------------------------------------------------------
+XcvrTBL:
+  rpc: get-chassis-inventory
+  item: //*[starts-with(name,"Xcvr")]
+  key:
+    - ancestor::*[starts-with(name,'FPC')]/name
+    - ancestor::*[starts-with(name,'PIC')]/name
+    - name
+  view: _XcvrTableView
+
+_XcvrTableView:
+  fields:
+    interface: name
+    sn: serial-number
+    pn: part-number
+    ver: version
+    type: description

@@ -1,5 +1,7 @@
 ---
-
+### -----------------------------------------------------------------------
+### show chassis-inventory            <mod by domas.zelionis@enet.ie>
+### -----------------------------------------------------------------------
 # -------------------------------------------------------------------
 # Table
 # -------------------------------------------------------------------
@@ -7,18 +9,18 @@
 # items.
 # -------------------------------------------------------------------
 
-FpcHwTable:
+FpcHwTBL:
     rpc: get-chassis-inventory
     item: .//name[starts-with(.,'FPC')]/parent::*
-    view: _fpc_hw_view
+    view: _FpcHwView
 
-FpcMiReHwTable:
+FpcMiReHwTBL:
     rpc: get-chassis-inventory
     item: .//name[starts-with(.,'FPC')]/parent::*
     key:
         - ancestor::multi-routing-engine-item/re-name
         - name
-    view: _fpc_hw_view
+    view: _FpcHwView
 
 # -------------------------------------------------------------------
 # View
@@ -28,13 +30,13 @@ FpcMiReHwTable:
 # bits of information from the FPC items
 # -------------------------------------------------------------------
 
-_fpc_hw_view:
-    fields:
-        sn: serial-number
-        pn: part-number
-        desc: description
-        ver: version
-        model: model-number
+_FpcHwView:
+  fields:
+    sn: serial-number
+    pn: part-number
+    desc: description
+    ver: version
+    model: model-number
 
 # -------------------------------------------------------------------
 # Table
@@ -43,21 +45,21 @@ _fpc_hw_view:
 # > show chassis fpc
 # -------------------------------------------------------------------
 
-FpcInfoTable:
+FpcInfoTBL:
     rpc: get-fpc-information
     item: .//fpc
     key: slot
-    view: _fpc_info_view
+    view: _FpcInfoView
 
-FpcMiReInfoTable:
+FpcMiReInfoTBL:
     rpc: get-fpc-information
     item: .//fpc
     key: 
         - ancestor::multi-routing-engine-item/re-name
         - slot
-    view: _fpc_info_view
+    view: _FpcInfoView
 
-_fpc_info_view:
+_FpcInfoView:
     fields:
         state: state
         memory: memory-heap-utilization
