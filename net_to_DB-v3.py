@@ -31,8 +31,8 @@ jfacts = dict()
 ###                FIRST OF ALL....LOGGING!!!
 ###                                             <mod by domas.zelionis@enet.ie>
 ### -------------------------------------------------------------------------------------------
-#LOG_LEVEL='ERROR'
-LOG_LEVEL='INFO'
+LOG_LEVEL='ERROR'
+#LOG_LEVEL='INFO'
 
 
 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -105,8 +105,9 @@ nodeList = list()
 #nodeList = ["lab.magna.radio.sw", "lab.magna.core.vc", "lab.magna.radio.ex4300", "lab.magna.test.sw"]
 nodeList = ["lab.magna.radio.ex4300", "lab.magna.radio.sw", "lab.magna.core.vc", "lab.magna.test.sw", "lab.magna.access.srx210", "lab.magna.core.acx", "lab.magna.core.mx5"]
 
-#nodeList = ["core.clermont.carn.sw1", "core.metro.hotel.sw1", "core.vdf.carnaross.sw1", "core.eircom4050.sw1", "core.dublin.fibre.vc1", "core.isp.tcy.gw1", "core.telecity.vc1", "core.threerock.coillte.vc1", "core.mpls.deg.rtr1", "core.slieve.glah.sw1", "core.hsq.sw1", "core.isp.deg.gw1", "core.mountoriel.sw1", "core.mpls.tallaght.acx1", "core.tallaght.vc1", "core.mpls.4050.rtr1", "core.mpls.slieve.glah.acx1", "core.deg.sw1", "core.vdf.lisduff.sw1", "core.deg.sw1", "core.vdf.lisduff.sw1", "core.enet.kells.vc1","core.vdf.scotstown.sw1"]
-
+nodeList = ["core.clermont.carn.sw1", "core.metro.hotel.sw1", "core.vdf.carnaross.sw1", "core.eircom4050.sw1", "core.dublin.fibre.vc1"]
+nodeList = ["core.telecity.vc1", "core.threerock.coillte.vc1", "core.mpls.deg.rtr1", "core.slieve.glah.sw1", "core.hsq.sw1", "core.mountoriel.sw1", "core.mpls.tallaght.acx1", "core.tallaght.vc1", "core.mpls.4050.rtr1", "core.mpls.slieve.glah.acx1",  "core.deg.sw1", "core.vdf.lisduff.sw1", "core.enet.kells.vc1","core.vdf.scotstown.sw1"]
+#"core.isp.tcy.gw1", "core.isp.deg.gw1",
 
 
 
