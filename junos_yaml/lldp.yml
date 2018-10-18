@@ -33,6 +33,7 @@ lldp_neighbors_detail_view:
     ttl: lldp-ttl
     timemark: lldp-timemark
     age: lldp-age
+    interface: lldp-local-interface
     local_interface: lldp-local-interface
     local_parent_interface_name: lldp-local-parent-interface-name
     local_port_id: lldp-local-port-id
